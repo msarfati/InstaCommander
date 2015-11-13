@@ -8,33 +8,57 @@ MODULE_PATH = os.path.split(os.path.realpath(__file__))[0]
 
 from instagram.client import InstagramAPI
 import requests
-from objectpath import Tree
+from io import BytesIO
 
 view = """\
 --------
+{img}
 
-{0.user}
-{0.created_time}
-{0.link}
-
-{0.images[low_resolution].url}
-
-Likes: {0.like_count}
-Comments: {0.comment_count}
-{0.tags}\
+{media.user}
+{media.created_time}
+{media.link}
+Likes: {media.like_count}
+Comments: {media.comment_count}
+{media.tags}\
 """
 
-access_token = 'b8fd789f28cc4db8801fcda9a733e3ae'
-client_secret = 'b7f009145f604e6190f420ef1d3ec350'
+from PIL import Image
+import random
+from bisect import bisect
 
-# Unauthenticated Client
-# client = InstagramAPI(client_id='b8fd789f28cc4db8801fcda9a733e3ae')
 
-# Unauthenticated Client
-# client = InstagramAPI(
-#     access_token=access_token,
-#     client_secret=client_secret,
-# )
+class ASCIIGenerator(object):
+
+    def __init__(self):
+        self.greyscale = [
+            " ",
+            " ",
+            ".,-",
+            "_ivc=!/|\\~",
+            "gjez2]/(YL)t[+T7Vf",
+            "mdK4ZGbNDXY5P*Q",
+            "W8KMA",
+            "#%$"
+        ]
+        self.zonebounds = [36, 72, 108, 144, 180, 216, 252]
+
+    def generate(self, img):
+        im = Image.open(img)
+        im = im.resize((160, 75), Image.BILINEAR)
+        im = im.convert("L")
+
+        str = ""
+        for y in range(0, im.size[1]):
+            for x in range(0, im.size[0]):
+                lum = 255 - im.getpixel((x, y))
+                row = bisect(self.zonebounds, lum)
+                possibles = self.greyscale[row]
+                str = str + possibles[random.randint(0, len(possibles) - 1)]
+            str = str + "\n"
+
+        return str
+
+ascii_gen = ASCIIGenerator()
 
 # Unauthorized Client
 client = InstagramAPI(
@@ -42,19 +66,16 @@ client = InstagramAPI(
     client_secret='b7f009145f604e6190f420ef1d3ec350',
 )
 
-feed = client.media_popular()
-for post in feed:
-    print(view.format(post))
 
-# # Manipulate image
-# post = feed[0]
-# img = post.images['standard_resolution']  # Image object is returned
-# img.url
-# img.height
-# img.width
+def poll_feed():
+    feed = client.media_popular()
+    for post in feed:
+        img = BytesIO(requests.get(post.images['low_resolution'].url).content)
+        print(view.format(media=post, img=ascii_gen.generate(img)))
 
 
-# redirect_uri = client.get_authorize_login_url(scope='basic')
-# response = requests.get(redirect_uri)
+def main():
+    poll_feed()
 
-# print("--- Welcome to the InstaCommander prototype. ---\n")
+if __name__ == '__main__':
+    main()

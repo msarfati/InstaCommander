@@ -28,6 +28,7 @@ make install
 * [ObjectPath](https://pypi.python.org/pypi/objectpath/) - a specification for sanely querying JSON and Python objects
     - [ObjectPath](https://github.com/adriank/ObjectPath) Python library
 * [urwid](http://urwid.org/) - Console interface toolkit
+* [Pillow](https://python-pillow.github.io/) 
 * [Requests](http://docs.python-requests.org/en/latest/) - handles other web requests
 * [lxml](http://lxml.de/) - For the occasional scraping
 
