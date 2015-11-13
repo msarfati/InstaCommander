@@ -8,7 +8,7 @@ install:
 	python setup.py install
 
 prototype:
-	ipython -i bin/prototype.py
+	ipython -i bin/prototype-pager.py
 
 clean:
 	rm -rf build dist *.egg-info
