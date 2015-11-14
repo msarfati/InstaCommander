@@ -68,7 +68,7 @@ client = InstagramAPI(
 
 
 def poll_feed():
-    feed = client.media_popular()
+    feed = [i for i in client.media_popular() if i.type == 'image']  # Filter for only images
     for post in feed:
         img = BytesIO(requests.get(post.images['low_resolution'].url).content)
         print(view.format(media=post, img=ascii_gen.generate(img)))
@@ -76,6 +76,7 @@ def poll_feed():
 
 def main():
     poll_feed()
+
 
 if __name__ == '__main__':
     main()

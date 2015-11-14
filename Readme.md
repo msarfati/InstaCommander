@@ -12,12 +12,13 @@ make install
 
 ## Application Screenshot
 
+![alt text](docs/screenshots/Screenshot_2015-11-13_18-05-35.png "InstaCommander prototype")
+
 ## Roadmap
 
 ### Towards version 1 (Current)
 * Use of modular, clean and maintainable design pattern, and standardization of InstaCommander widgets and user conventions
 * Graceful decay support - InstaCommander should be able to gracefully decay its color and unicode support in terminals with less and less color range, without losing user functionality
-* 
 
 ### Future plans
 
@@ -25,14 +26,5 @@ make install
 
 ### Toolchain
 * [python-instagram](https://github.com/Instagram/python-instagram) - Tumblr API wrapper compatible for Python 3
-* [ObjectPath](https://pypi.python.org/pypi/objectpath/) - a specification for sanely querying JSON and Python objects
-    - [ObjectPath](https://github.com/adriank/ObjectPath) Python library
 * [urwid](http://urwid.org/) - Console interface toolkit
-* [Pillow](https://python-pillow.github.io/) 
-* [Requests](http://docs.python-requests.org/en/latest/) - handles other web requests
-* [lxml](http://lxml.de/) - For the occasional scraping
-
-### Tools still requiring research
-* Rendering images into ANSI/ASCII art
-* Rendering videos into ANSI/ASCII
-* Render audio into 8bit
+* [Pillow](https://python-pillow.github.io/) - Python imaging library, to render images into ASCII/ANSI art

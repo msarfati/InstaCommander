@@ -1,32 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pytumblr import TumblrRestClient
-from objectpath import Tree
 import urwid
 
-client = TumblrRestClient(
-    consumer_key='iWpkjxQeBaFBpIvHTB0RbP7G5ozicNZ5FQtiMkkoKFkiJ4Cfjb',
-    consumer_secret='JfmKt6EJWOPdNs155kBrVC7AC8YO3V9RVJt73PcuU85E7buGsq',
-    oauth_token='ZoegVG4B9pTAFm3lI86bSueW8KVlr0PKOkxNsh4CqmwIMnLRcE',
-    oauth_secret='AkuR2qM8QNvEm62dQ8JbldxYicQJMvpxdOhfBQPALgsBWLrc7G',
-)
-
-
-tree = Tree(client.dashboard(type="text"))
-post = u"""\
---------
-
-Username: {blog_name}
-Date: {date}
-Post type: {type}
-
-:: {title} ::
-{body}
-
-Tags: {tags}
-Notes: {note_count}
-URL: {post_url}
-"""
 
 def scroll_up():
     txt.set_text("Scrolling up")
