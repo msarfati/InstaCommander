@@ -28,3 +28,8 @@ make install
 * [python-instagram](https://github.com/Instagram/python-instagram) - Tumblr API wrapper compatible for Python 3
 * [urwid](http://urwid.org/) - Console interface toolkit
 * [Pillow](https://python-pillow.github.io/) - Python imaging library, to render images into ASCII/ANSI art
+* [libcaca](http://caca.zoy.org/wiki/libcaca) - Another imaging library
+
+## Kudos
+* [img2txt](https://github.com/hit9/img2txt)
+* 
