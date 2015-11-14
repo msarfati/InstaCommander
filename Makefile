@@ -48,4 +48,7 @@ build-wheels:
 install-wheels:
 	pip install --use-wheel --find-links=wheelhouse --no-index -r requirements.txt
 
-.PHONY: clean install test server watch db single docs shell dbshell wheelhouse prototype build-wheels install-wheels
+requirements:
+	pip freeze | sed '/$(PROJECT_NAME)/ d' > requirements.txt
+
+.PHONY: clean install test server watch db single docs shell dbshell wheelhouse prototype build-wheels install-wheels requirements

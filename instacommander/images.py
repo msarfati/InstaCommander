@@ -3,9 +3,26 @@
 from PIL import Image
 
 
-class ANSIRenderer(object):
+class ANSIImage(object):
+    def __init__(self, original, output_size=80.0):
+        '''
+        :param original: Raw image bytes
+        :type original: io.BytesIO
 
-    def getANSIcolor_for_rgb(rgb):
+        :param output_size: Size of ANSI stream output. Default to 80.0
+        :type output_size: float
+        '''
+        self.original = Image.open(original).convert('RGBA')
+        self.output_size = output_size
+        self.img = self.resize(self.original, maxLen=output_size)
+        self.stream = self.generate_ANSI(
+            pixels=self.img.load(),
+            width=self.img.size[0],
+            height=self.img.size[1],
+            bgcolor_rgba=None,
+        )
+
+    def getANSIcolor_for_rgb(self, rgb):
         """
         Convert to web-safe color since that's what terminals can handle in
         "256 color mode"
@@ -22,7 +39,7 @@ class ANSIRenderer(object):
         # section)
         return int(((websafe_r * 36) + (websafe_g * 6) + websafe_b) + 16)
 
-    def generate_ANSI_to_set_fg_bg_colors(cur_fg_color, cur_bg_color, new_fg_color, new_bg_color):
+    def generate_ANSI_to_set_fg_bg_colors(self, cur_fg_color, cur_bg_color, new_fg_color, new_bg_color):
         # This code assumes that ESC[49m and ESC[39m work for resetting bg and fg
         # This may not work on all terminals in which case we would have to use
         # ESC[0m
@@ -52,7 +69,7 @@ class ANSIRenderer(object):
         else:
             return ""
 
-    def getANSIbgarray_for_ANSIcolor(ANSIcolor):
+    def getANSIbgarray_for_ANSIcolor(self, ANSIcolor):
         """Return array of color codes to be used in composing an SGR escape
         sequence. Using array form lets us compose multiple color updates without
         putting out additional escapes"""
@@ -61,7 +78,7 @@ class ANSIRenderer(object):
         # To set BG in 256 color you use a code like ESC[48;5;###m
         return ['48', '5', str(ANSIcolor)]
 
-    def getANSIbgstring_for_ANSIcolor(ANSIcolor):
+    def getANSIbgstring_for_ANSIcolor(self, ANSIcolor):
         # Get the array of color code info, prefix it with ESCAPE code and
         # terminate it with "m"
         return "\x1b[" + ";".join(self.getANSIbgarray_for_ANSIcolor(ANSIcolor)) + "m"
@@ -86,7 +103,7 @@ class ANSIRenderer(object):
                 int(result_alpha * 255)
             )
 
-    def resize(img, antialias=True, maxLen=80.0):
+    def resize(self, img, antialias=True, maxLen=80.0):
         """
         Resizes image prior to processing.
 
@@ -113,11 +130,7 @@ class ANSIRenderer(object):
 
         return img
 
-
-    def generate_ANSI_from_pixels(pixels, width, height, bgcolor_rgba, get_pixel_func=None, is_overdraw=False):
-        """Does not output final newline or reset to particular colors at end --
-        caller should do that if desired bgcolor_rgba=None is treated as default
-        background color."""
+    def generate_ANSI(self, pixels, width, height, bgcolor_rgba, get_pixel_func=None, is_overdraw=False):
         if get_pixel_func is None:
             # just treat pixels as 2D array
             get_pixel_func = lambda pixels, x, y: (" ", pixels[x, y])
@@ -125,10 +138,10 @@ class ANSIRenderer(object):
         # Compute ANSI bg color and strings we'll use to reset colors when moving
         # to next line
         if bgcolor_rgba is not None:
-            self.bgcolor_ANSI = getANSIcolor_for_rgb(bgcolor_rgba)
+            bgcolor_ANSI = self.getANSIcolor_for_rgb(bgcolor_rgba)
             # Reset cur bg color to bgcolor because \n will fill the new line with
             # this color
-            self.bgcolor_ANSI_string = getANSIbgstring_for_ANSIcolor(bgcolor_ANSI)
+            bgcolor_ANSI_string = self.getANSIbgstring_for_ANSIcolor(bgcolor_ANSI)
         else:
             bgcolor_ANSI = None
             # Reset cur bg color default because \n will fill the new line with
@@ -268,5 +281,5 @@ class ANSIRenderer(object):
                 # line, no filling occurs
                 string += "\n"
                 cursor_x = 0
-
+        string += "\x1b[0m\n"
         return string
