@@ -65,7 +65,10 @@ def to_ascii(
     """
     img = Image.open(img)
 
-    # Explicitly encode Str as ASCII for libcaca arg casting
+    if "shades" or "blocks" in charset:
+        exformat = "utf8"  # Will not work in ascii mode
+
+    # Explicitly encode argument strings as ASCII
     ditalgo = ditalgo.encode('ascii')
     exformat = exformat.encode('ascii')
     charset = charset.encode('ascii')

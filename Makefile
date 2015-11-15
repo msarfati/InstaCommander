@@ -1,6 +1,7 @@
 SHELL=/bin/bash
 PROJECT_NAME=InstaCommander
 MOD_NAME=instacommander
+APP_ENTRY=bin/instacommander.py
 TEST_CMD=SETTINGS=$$PWD/etc/testing.conf nosetests -w $(MOD_NAME)
 TEST_DUMP="./maketests.log"
 
@@ -8,7 +9,7 @@ install:
 	python setup.py install
 
 prototype:
-	ipython -i bin/prototype-pager.py
+	ipython -i $(APP_ENTRY)
 
 clean:
 	rm -rf build dist *.egg-info
@@ -18,8 +19,8 @@ clean:
 wheelhouse:
 	python setup.py bdist_wheel
 
-server:
-	SETTINGS=$$PWD/etc/dev.conf bin/manage.py runserver
+run:
+	python $(APP_ENTRY)
 
 shell:
 	SETTINGS=$$PWD/etc/dev.conf bin/manage.py shell
