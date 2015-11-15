@@ -22,6 +22,33 @@ class ANSIImage(object):
             bgcolor_rgba=None,
         )
 
+    def resize(self, img, antialias=True, maxLen=80.0):
+        """
+        Resizes image prior to processing.
+
+        Application will handle dynamic detection of maxLen, based on terminal size
+
+        :param img: A PIL.Image object
+        :type img: PIL.Image
+
+        :param antialias:
+        :type antialias: bool
+
+        :param maxLen: Size of the image
+        :type maxLen: float
+        """
+        if maxLen is not None:
+            native_width, native_height = img.size
+            rate = float(maxLen) / max(native_width, native_height)
+            width = int(rate * native_width)
+            height = int(rate * native_height)
+
+            if native_width != width or native_height != height:
+                img = img.resize((width, height), Image.ANTIALIAS
+                                 if antialias else Image.NEAREST)
+
+        return img
+
     def getANSIcolor_for_rgb(self, rgb):
         """
         Convert to web-safe color since that's what terminals can handle in
@@ -102,33 +129,6 @@ class ANSIImage(object):
                     (dst[2] * dst_multiplier)) / result_alpha),
                 int(result_alpha * 255)
             )
-
-    def resize(self, img, antialias=True, maxLen=80.0):
-        """
-        Resizes image prior to processing.
-
-        Application will handle dynamic detection of maxLen, based on terminal size
-
-        :param img: A PIL.Image object
-        :type img: PIL.Image
-
-        :param antialias:
-        :type antialias: bool
-
-        :param maxLen: Size of the image
-        :type maxLen: float
-        """
-        if maxLen is not None:
-            native_width, native_height = img.size
-            rate = float(maxLen) / max(native_width, native_height)
-            width = int(rate * native_width)
-            height = int(rate * native_height)
-
-            if native_width != width or native_height != height:
-                img = img.resize((width, height), Image.ANTIALIAS
-                                 if antialias else Image.NEAREST)
-
-        return img
 
     def generate_ANSI(self, pixels, width, height, bgcolor_rgba, get_pixel_func=None, is_overdraw=False):
         if get_pixel_func is None:
