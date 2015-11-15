@@ -35,7 +35,7 @@ get_tty_width = lambda: int(os.popen('stty size').read().split()[1])
 output_size = get_tty_width()
 
 
-def poll_feed():
+def old_poll_feed():
     feed = [i for i in client.media_popular() if i.type == 'image']  # Filter for only images
     for post in feed:
         img = BytesIO(requests.get(post.images['standard_resolution'].url).content)
