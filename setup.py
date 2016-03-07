@@ -16,15 +16,13 @@ def read(fname):
 
 setup(version=version,
     name='InstaCommander',
-    description="",
+    description="Prototype Terminal client for Instagram.",
     author='Michael Sarfati',
     author_email="michael.sarfati@utoronto.ca",
     packages=[
         "instacommander",
         "instacommander.tests",
-        "instacommander.models",
         "instacommander.utils",
-        "instacommander.views",
     ],
     scripts=[
     ],
@@ -32,7 +30,7 @@ setup(version=version,
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     include_package_data=True,
     keywords='',
-    install_requires=read('requirements.txt'),
+    install_requires=read('dependencies.txt'),
 
     zip_safe=False,
 )

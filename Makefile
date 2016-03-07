@@ -7,9 +7,11 @@ TEST_DUMP="./maketests.log"
 
 install:
 	python setup.py install
+	pip install ./wheelhouse/*
 
 prototype:
-	ipython -i $(APP_ENTRY)
+	# ipython -i $(APP_ENTRY)
+	python $(APP_ENTRY)
 
 clean:
 	rm -rf build dist *.egg-info
@@ -35,21 +37,14 @@ test:
 single:
 	$(TEST_CMD) -c etc/nose/test-single.cfg
 
-db:
-	SETTINGS=$$PWD/etc/dev.conf bin/manage.py init_db
-	SETTINGS=$$PWD/etc/dev.conf bin/manage.py populate_db
-
-dbshell:
-	SETTINGS=$$PWD/etc/dev.conf bin/manage.py dbshell
-
 build-wheels:
 	pip wheel .
-	pip wheel -r requirements.txt
+	pip wheel -r dependencies.txt
 
 install-wheels:
-	pip install --use-wheel --find-links=wheelhouse --no-index -r requirements.txt
+	pip install --use-wheel --find-links=wheelhouse --no-index -r dependencies.txt
 
-requirements:
-	pip freeze | sed '/$(PROJECT_NAME)/ d' > requirements.txt
+dependencies:
+	pip freeze | sed '/$(PROJECT_NAME)/ d' > dependencies.txt
 
-.PHONY: clean install test server watch db single docs shell dbshell wheelhouse prototype build-wheels install-wheels requirements
+.PHONY: clean install test server watch db single docs shell dbshell wheelhouse prototype build-wheels install-wheels dependencies
