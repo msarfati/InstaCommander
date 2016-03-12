@@ -10,9 +10,13 @@ mkvirtualenv -p `which python3` -a . instacommander
 make install
 ```
 
-## Application Screenshot
+## Application Screenshots
 
+### Monochrome
 ![alt text](docs/screenshots/Screenshot_2015-11-13_18-05-35.png "InstaCommander prototype")
+
+### Color
+![alt text](docs/screenshots/Screenshot_2016-03-11_23-20-44.png "InstaCommander prototype")
 
 ## Roadmap
 
