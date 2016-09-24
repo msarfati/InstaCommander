@@ -18,6 +18,19 @@ make install
 ### Color
 ![alt text](docs/screenshots/Screenshot_2016-03-11_23-20-44.png "InstaCommander prototype")
 
+## Using the Prototype
+### Default
+Default prototype will show the feed for user [@instagram](https://www.instagram.com/instagram)
+```bash
+make prototype
+```
+
+### Username specified
+Or you can provide a value for the `username` parameter. In this example, we grab [@marilynmanson](https://www.instagram.com/marilynmanson)'s feed.
+```bash
+make prototype username=marilynmanson
+```
+
 ## Roadmap
 
 ### Towards version 1 (Current)

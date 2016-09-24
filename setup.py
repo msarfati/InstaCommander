@@ -30,7 +30,7 @@ setup(version=version,
     classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     include_package_data=True,
     keywords='',
-    install_requires=read('dependencies.txt'),
+    install_requires=read('requirements.txt'),
 
     zip_safe=False,
 )
