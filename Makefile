@@ -11,7 +11,7 @@ install:
 
 prototype:
 	# ipython -i $(APP_ENTRY)
-	python $(APP_ENTRY)
+	python $(APP_ENTRY) $(username)
 
 clean:
 	rm -rf build dist *.egg-info
